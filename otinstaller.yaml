@@ -1,0 +1,49 @@
+# OTInstaller manifest. Reference: https://otinstaller.com/docs/manifest
+# yaml-language-server: $schema=https://otinstaller.com/schema/v1.json
+schema: 1
+name: python-email-validator
+namespace: osintverse-community
+version: 2.3.0
+summary: Checks an email address's syntax and whether its domain accepts mail, and normalises it
+readme: README.md
+license: Unlicense
+homepage: https://github.com/JoshData/python-email-validator
+categories:
+  - email
+  - domain-dns
+tags:
+  - dns
+  - normalization
+  - syntax
+  - validation
+inputs:
+  - name: email
+    type: email
+    required: true
+    description: The address to check
+outputs:
+  - type: email
+    description: The normalised address, with its domain and MX records
+runtime:
+  kind: pipx
+  package: email-validator
+  package_version: 2.3.0
+  index: pypi
+  entrypoint: email_validator
+  wheel_sha256: 80f13f623413e6b197ae73bb10bf4eb0908faf509ad8362c5edeb0be7fd450b4
+  command:
+    - email_validator
+    - "{email}"
+  output_format: json
+  timeout_seconds: 60
+network:
+  egress: true
+  domains: []
+ethics:
+  touches_target: false
+  auth_required: false
+  collects_personal_data: false
+  notes: Looks up the domain's MX records through DNS; it never contacts the mailbox.
+test:
+  input:
+    email: postmaster@gmail.com
